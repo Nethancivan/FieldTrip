@@ -1,5 +1,5 @@
 export const employees = [
   "Hoàng Phương Thảo",
-  "Nguyễn Văn A",
-  "Trần Thị B",
+  "Văn Hồng Thiên",
+  "Bùi Thị Ngọc Thoa",
 ];
