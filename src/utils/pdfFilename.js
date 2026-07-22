@@ -17,14 +17,15 @@ function safeSegment(value, fallback) {
   return cleaned || fallback;
 }
 
-export function getEmployeeFinalName(employee) {
+function getEmployeeFinalName(employee) {
   const parts = String(employee || "").trim().split(/\s+/).filter(Boolean);
   return parts[parts.length - 1] || "Nhan-su";
 }
 
-export function createDownloadFilename(snapshot, exportedAt) {
+export function createPdfFilename(snapshot, exportedAt) {
   const timestamp = formatTimestampForFilename(exportedAt);
-  const finalName = safeSegment(getEmployeeFinalName(snapshot.employee), "Nhan-su");
+  const receiptId = safeSegment(snapshot.receiptId, "EXP");
+  const employee = safeSegment(getEmployeeFinalName(snapshot.employee), "Nhan-su");
   const amount = String(snapshot.amountRaw || "0").replace(/\D/g, "");
-  return `${timestamp}_${finalName}_${amount}.png`;
+  return `${timestamp}_${receiptId}_${employee}_${amount}.pdf`;
 }

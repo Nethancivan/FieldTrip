@@ -1,27 +1,30 @@
 export const copy = {
   privacyMessage:
     "Thông tin và hình ảnh được xử lý trực tiếp trên thiết bị, không được tải lên máy chủ.",
-  formTitle: "Thông tin chi phí",
+  formTitle: "Thông tin thực chi",
   formDescription:
-    "Điền thông tin, thêm hình ảnh chứng từ và tạo một phiếu chi phí chuẩn hóa để lưu hoặc gửi nội bộ.",
-  generate: "Tạo phiếu chi phí",
+    "Điền thông tin, thêm hình ảnh chứng từ và tạo một Phiếu thực chi chuẩn hóa để lưu PDF về thiết bị.",
+  generate: "Tạo phiếu thực chi",
   generating: "Đang tạo phiếu...",
-  download: "Tải xuống PNG",
-  downloading: "Đang tạo file PNG...",
-  previewTitle: "Phiếu đã tạo",
+  download: "Tải phiếu PDF",
+  downloading: "Đang tạo phiếu PDF...",
+  previewTitle: "Phiếu thực chi đã tạo",
   emptyPreview:
-    "Chưa có phiếu chi phí. Hoàn tất biểu mẫu và bấm tạo phiếu để xem bản xem trước.",
+    "Chưa có Phiếu thực chi. Hoàn tất biểu mẫu và bấm tạo phiếu để xem bản xem trước.",
   outdated:
     "Thông tin đã thay đổi. Vui lòng tạo lại phiếu trước khi tải xuống.",
-  generatedSuccess: "Phiếu chi phí đã được tạo từ dữ liệu hiện tại.",
-  exportSuccess: "File PNG đã được chuẩn bị để tải xuống.",
+  generatedSuccess: "Phiếu thực chi đã được tạo từ dữ liệu hiện tại.",
+  exportSuccess: "Phiếu PDF đã được chuẩn bị để tải xuống.",
   exportError:
-    "Không thể tạo file PNG. Vui lòng thử lại hoặc giảm kích thước hình ảnh.",
+    "Không thể tạo phiếu PDF. Vui lòng thử lại hoặc giảm kích thước hình ảnh chứng từ.",
+  assetLoadError:
+    "Không thể tải logo hoặc hình ảnh chứng từ. Vui lòng kiểm tra lại file trước khi tạo PDF.",
   validationSummary:
     "Vui lòng kiểm tra lại các trường được đánh dấu trước khi tạo phiếu.",
   fields: {
     employee: "Nhân sự",
     fieldtrip: "Tên chuyến công tác",
+    fieldtripCode: "Mã chuyến công tác",
     expenseDate: "Ngày phát sinh",
     expenseTime: "Thời gian phát sinh",
     amount: "Số tiền",
@@ -34,6 +37,7 @@ export const copy = {
     employee: "Chọn nhân sự",
     category: "Chọn hạng mục",
     fieldtrip: "CSR Khmer Trà Vinh",
+    fieldtripCode: "FT-CSR-KHMER-TV",
     amount: "1.250.000",
     description:
       "Taxi từ Trường Đại học Trà Vinh đến địa điểm khảo sát hoạt động CSR.",

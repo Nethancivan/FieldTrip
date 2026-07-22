@@ -11,6 +11,7 @@ function createInitialForm() {
   return {
     employee: "",
     fieldtrip: "",
+    fieldtripCode: "",
     expenseDate: getLocalDateInputValue(openedAt),
     expenseTime: getLocalTimeInputValue(openedAt),
     amountRaw: "",

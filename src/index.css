@@ -470,6 +470,16 @@
     line-height: 1.05;
   }
 
+  .receipt-subtitle {
+    margin: 8px 0 0;
+    color: var(--brand-primary-dark);
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
   .receipt-id-block {
     flex: 0 0 auto;
     text-align: right;
@@ -503,6 +513,10 @@
   .receipt-section:last-child {
     border-bottom: 0;
     padding-bottom: 0;
+  }
+
+  [data-pdf-block="true"] {
+    background: var(--brand-surface);
   }
 
   .receipt-section-title {
@@ -548,29 +562,35 @@
 
   .receipt-evidence-grid {
     display: grid;
+    gap: 16px;
+  }
+
+  .receipt-evidence-row {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
   }
 
-  .receipt-evidence-grid--single {
+  .receipt-evidence-row--single {
     grid-template-columns: 1fr;
   }
 
   .receipt-evidence-item {
     overflow: hidden;
+    margin: 0;
     border: 1px solid var(--brand-border);
     border-radius: 14px;
-    background: var(--brand-background);
+    background: var(--brand-surface);
   }
 
   .receipt-evidence-item img {
     width: 100%;
     height: 360px;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
   }
 
-  .receipt-evidence-grid--single img {
+  .receipt-evidence-row--single img {
     height: 560px;
   }
 
@@ -594,6 +614,10 @@
 
   .receipt-document--export .receipt-title {
     font-size: 2.3rem;
+  }
+
+  .receipt-document--export .receipt-subtitle {
+    font-size: 1.05rem;
   }
 
   .receipt-document--export .receipt-id-label,
@@ -765,11 +789,15 @@
     gap: 12px;
   }
 
+  .receipt-evidence-row {
+    gap: 12px;
+  }
+
   .receipt-evidence-item img {
     height: 210px;
   }
 
-  .receipt-evidence-grid--single img {
+  .receipt-evidence-row--single img {
     height: 320px;
   }
 }

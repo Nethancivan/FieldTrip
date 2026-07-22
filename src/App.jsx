@@ -1,6 +1,5 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
-import { toPng } from "html-to-image";
 import AppHeader from "./components/AppHeader";
 import ExpenseForm from "./components/ExpenseForm";
 import ReceiptDocument from "./components/ReceiptDocument";
@@ -8,15 +7,10 @@ import ReceiptPreview from "./components/ReceiptPreview";
 import StickyActionBar from "./components/StickyActionBar";
 import { copy } from "./constants/copy";
 import { useExpenseForm } from "./hooks/useExpenseForm";
-import { createDownloadFilename } from "./utils/filename";
-import { waitForImagesInElement } from "./utils/imageLoading";
-import { createReceiptId } from "./utils/receiptId";
 import { waitForFrames } from "./utils/datetime";
-
-function getCssColor(variableName, fallback) {
-  const value = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
-  return value || fallback;
-}
+import { waitForImagesInElement } from "./utils/imageLoading";
+import { createPdfFilename } from "./utils/pdfFilename";
+import { createReceiptId } from "./utils/receiptId";
 
 function focusFirstInvalidField() {
   requestAnimationFrame(() => {
@@ -32,6 +26,7 @@ function buildSnapshot(form, photos, createdAt) {
   return {
     employee: form.employee,
     fieldtrip: form.fieldtrip.trim(),
+    fieldtripCode: form.fieldtripCode.trim(),
     expenseDate: form.expenseDate,
     expenseTime: form.expenseTime,
     amountRaw: form.amountRaw,
@@ -42,20 +37,6 @@ function buildSnapshot(form, photos, createdAt) {
     receiptId: createReceiptId(createdAt),
     createdAt,
   };
-}
-
-function triggerDownload(dataUrl, filename) {
-  const link = document.createElement("a");
-  link.href = dataUrl;
-  link.download = filename;
-  link.rel = "noopener";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  if (!("download" in HTMLAnchorElement.prototype)) {
-    window.open(dataUrl, "_blank", "noopener,noreferrer");
-  }
 }
 
 export default function App() {
@@ -70,12 +51,14 @@ export default function App() {
   const [isExporting, setIsExporting] = useState(false);
   const [exportMessage, setExportMessage] = useState("");
   const [exportTone, setExportTone] = useState("neutral");
+  const [areReceiptAssetsReady, setAreReceiptAssetsReady] = useState(false);
 
   const formApi = useExpenseForm({
     onDirty: useCallback(() => {
       setSnapshot((current) => {
         if (current) {
           setIsDirty(true);
+          setAreReceiptAssetsReady(false);
           setExportTone("error");
           setExportMessage(copy.outdated);
         }
@@ -83,6 +66,47 @@ export default function App() {
       });
     }, []),
   });
+
+  useEffect(() => {
+    let cancelled = false;
+    setAreReceiptAssetsReady(false);
+
+    if (!snapshot || isDirty) {
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    const prepareAssets = async () => {
+      try {
+        await waitForFrames(2);
+        if (!exportRef.current) {
+          return;
+        }
+        if (document.fonts?.ready) {
+          await document.fonts.ready;
+        }
+        await waitForImagesInElement(exportRef.current);
+        if (!cancelled) {
+          setAreReceiptAssetsReady(true);
+          if (!exportMessage) {
+            setExportTone("neutral");
+          }
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setExportTone("error");
+          setExportMessage(copy.assetLoadError);
+        }
+      }
+    };
+
+    prepareAssets();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [snapshot, isDirty, exportMessage]);
 
   const handleGenerate = useCallback(async () => {
     setIsGenerating(true);
@@ -102,6 +126,7 @@ export default function App() {
     const nextSnapshot = buildSnapshot(formApi.form, formApi.photos, createdAt);
     setSnapshot(nextSnapshot);
     setIsDirty(false);
+    setAreReceiptAssetsReady(false);
     setExportedAt(null);
     setExportTone("neutral");
     setExportMessage("");
@@ -115,7 +140,7 @@ export default function App() {
   }, [formApi]);
 
   const handleDownload = useCallback(async () => {
-    if (!snapshot || isDirty || isExporting || !exportRef.current) {
+    if (!snapshot || isDirty || isExporting || !exportRef.current || !areReceiptAssetsReady) {
       return;
     }
 
@@ -129,19 +154,12 @@ export default function App() {
         setExportedAt(nextExportedAt);
       });
 
-      if (document.fonts?.ready) {
-        await document.fonts.ready;
-      }
       await waitForFrames(2);
-      await waitForImagesInElement(exportRef.current);
-      await waitForFrames(2);
-
-      const dataUrl = await toPng(exportRef.current, {
-        backgroundColor: getCssColor("--brand-surface", "white"),
-        cacheBust: true,
-        pixelRatio: 1,
-      });
-      triggerDownload(dataUrl, createDownloadFilename(snapshot, nextExportedAt));
+      const { exportReceiptPdf } = await import("./utils/exportPdf");
+      await exportReceiptPdf(
+        exportRef.current,
+        createPdfFilename(snapshot, nextExportedAt),
+      );
       setExportTone("success");
       setExportMessage(copy.exportSuccess);
     } catch (error) {
@@ -150,9 +168,9 @@ export default function App() {
     } finally {
       setIsExporting(false);
     }
-  }, [isDirty, isExporting, snapshot]);
+  }, [areReceiptAssetsReady, isDirty, isExporting, snapshot]);
 
-  const canDownload = Boolean(snapshot) && !isDirty && !isExporting;
+  const canDownload = Boolean(snapshot) && !isDirty && !isExporting && areReceiptAssetsReady;
 
   return (
     <main className="app-shell">

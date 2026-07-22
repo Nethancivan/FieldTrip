@@ -18,7 +18,7 @@ export default function ReceiptPreview({
         {copy.previewTitle}
       </h2>
       <p className="section-note">
-        Bản xem trước có thể co giãn theo màn hình. File PNG tải xuống luôn được render từ bản 1080 px.
+        Bản xem trước có thể co giãn theo màn hình. File tải xuống là PDF A4 được tạo trực tiếp trên thiết bị.
       </p>
 
       {snapshot ? (

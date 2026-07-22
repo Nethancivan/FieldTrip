@@ -1,6 +1,7 @@
 import { categories } from "../constants/categories";
 import { copy } from "../constants/copy";
 import { employees } from "../constants/employees";
+import { fieldtrips } from "../constants/fieldtrips";
 import AmountInput from "./AmountInput";
 import FormField from "./FormField";
 import LoadingSpinner from "./LoadingSpinner";
@@ -13,8 +14,26 @@ export default function ExpenseForm({
   liveMessage,
   liveTone,
 }) {
-  const { form, errors, photos, photoMessage, isProcessingPhotos, updateField, addPhotos, removePhoto } = formApi;
+  const {
+    form,
+    errors,
+    photos,
+    photoMessage,
+    isProcessingPhotos,
+    updateField,
+    addPhotos,
+    removePhoto,
+  } = formApi;
   const descriptionLength = form.description.length;
+
+  const handleFieldtripBlur = (event) => {
+    const value = event.target.value.trim();
+    updateField("fieldtrip", value);
+    const matchedFieldtrip = fieldtrips.find((fieldtrip) => fieldtrip.name === value);
+    if (matchedFieldtrip && !form.fieldtripCode.trim()) {
+      updateField("fieldtripCode", matchedFieldtrip.code);
+    }
+  };
 
   return (
     <section className="surface-panel panel-section" aria-labelledby="expense-form-title">
@@ -49,16 +68,40 @@ export default function ExpenseForm({
 
         <FormField id="fieldtrip" label={copy.fields.fieldtrip} required error={errors.fieldtrip}>
           {({ describedBy }) => (
+            <>
+              <input
+                id="fieldtrip"
+                className="form-control"
+                type="text"
+                list="fieldtrip-suggestions"
+                value={form.fieldtrip}
+                placeholder={copy.placeholders.fieldtrip}
+                aria-invalid={errors.fieldtrip ? "true" : "false"}
+                aria-describedby={describedBy}
+                onChange={(event) => updateField("fieldtrip", event.target.value)}
+                onBlur={handleFieldtripBlur}
+              />
+              <datalist id="fieldtrip-suggestions">
+                {fieldtrips.map((fieldtrip) => (
+                  <option key={fieldtrip.code} value={fieldtrip.name} label={fieldtrip.code} />
+                ))}
+              </datalist>
+            </>
+          )}
+        </FormField>
+
+        <FormField id="fieldtripCode" label={copy.fields.fieldtripCode} error={errors.fieldtripCode}>
+          {({ describedBy }) => (
             <input
-              id="fieldtrip"
+              id="fieldtripCode"
               className="form-control"
               type="text"
-              value={form.fieldtrip}
-              placeholder={copy.placeholders.fieldtrip}
-              aria-invalid={errors.fieldtrip ? "true" : "false"}
+              value={form.fieldtripCode}
+              placeholder={copy.placeholders.fieldtripCode}
+              aria-invalid={errors.fieldtripCode ? "true" : "false"}
               aria-describedby={describedBy}
-              onChange={(event) => updateField("fieldtrip", event.target.value)}
-              onBlur={(event) => updateField("fieldtrip", event.target.value.trim())}
+              onChange={(event) => updateField("fieldtripCode", event.target.value)}
+              onBlur={(event) => updateField("fieldtripCode", event.target.value.trim())}
             />
           )}
         </FormField>
