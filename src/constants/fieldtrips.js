@@ -1,14 +1,22 @@
 export const fieldtrips = [
   {
-    name: "CSR Khmer Trà Vinh",
-    code: "FT-CSR-KHMER-TV",
+    name: "PL01_FieldTrip Miền Bắc",
+    code: "FT-Mienbac",
   },
   {
-    name: "Khảo sát cộng đồng",
-    code: "FT-KSCD",
+    name: "PL01_FieldTrip Miền Trung",
+    code: "FT-Mientrung",
   },
   {
-    name: "Tác nghiệp hiện trường",
-    code: "FT-TNHT",
+    name: "ShootingMV Phú Thọ",
+    code: "ST-MV-PT",
+  },
+  {
+    name: "Pre Shooting MVKhmer Dạy múa",
+    code: "PST-MV-Khmer",
+  },
+    {
+    name: "PL02_FieldTrip2 Nghệ An",
+    code: "FT-Mientrung",
   },
 ];
