@@ -1,11 +1,11 @@
 export const fieldtrips = [
   {
     name: "PL01_FieldTrip Miền Bắc",
-    code: "FT-Mienbac",
+    code: "PL01-FT-Mienbac",
   },
   {
     name: "PL01_FieldTrip Miền Trung",
-    code: "FT-Mientrung",
+    code: "PL01-FT-Mientrung",
   },
   {
     name: "ShootingMV Phú Thọ",
@@ -17,6 +17,6 @@ export const fieldtrips = [
   },
     {
     name: "PL02_FieldTrip2 Nghệ An",
-    code: "FT-Mientrung",
+    code: "PL02-FT-Nghean",
   },
 ];
