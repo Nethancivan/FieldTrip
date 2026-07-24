@@ -2,7 +2,7 @@ import ReceiptFooter from "./ReceiptFooter";
 import ReceiptHeader from "./ReceiptHeader";
 import ReceiptSection from "./ReceiptSection";
 import { formatVnd } from "../utils/currency";
-import { formatDateDisplay } from "../utils/datetime";
+import { formatDateDisplay, formatDateTimeDisplay, getTimezoneLabel } from "../utils/datetime";
 
 function ReceiptField({ label, value, className = "", amount = false }) {
   return (
@@ -15,6 +15,27 @@ function ReceiptField({ label, value, className = "", amount = false }) {
   );
 }
 
+function ReceiptAuditTrail({ createdAt, exportedAt }) {
+  return (
+    <section className="receipt-section receipt-audit" data-pdf-block="true">
+      <div className="receipt-fields receipt-fields--audit">
+        <ReceiptField
+          label="Record Created At"
+          value={`${formatDateTimeDisplay(createdAt)} ${getTimezoneLabel(createdAt)}`}
+        />
+        <ReceiptField
+          label="Exported At"
+          value={
+            exportedAt
+              ? `${formatDateTimeDisplay(exportedAt)} ${getTimezoneLabel(exportedAt)}`
+              : "Chưa xuất PDF"
+          }
+        />
+      </div>
+    </section>
+  );
+}
+
 export default function ReceiptDocument({ snapshot, exportedAt, mode = "preview", documentRef }) {
   const location = snapshot.location || "Không ghi nhận";
   const fieldtripCode = snapshot.fieldtripCode || "Không ghi nhận";
@@ -23,7 +44,8 @@ export default function ReceiptDocument({ snapshot, exportedAt, mode = "preview"
 
   return (
     <article
-      className={`receipt-document receipt-document--${mode}`}
+      className={`receipt-document receipt-body receipt-document--${mode}`}
+      id={mode === "export" ? "receipt-document" : undefined}
       ref={documentRef}
       aria-label={`Phiếu thực chi ${snapshot.receiptId}`}
     >
@@ -73,7 +95,8 @@ export default function ReceiptDocument({ snapshot, exportedAt, mode = "preview"
         </div>
       </section>
 
-      <ReceiptFooter createdAt={snapshot.createdAt} exportedAt={exportedAt} />
+      <ReceiptAuditTrail createdAt={snapshot.createdAt} exportedAt={exportedAt} />
+      <ReceiptFooter />
     </article>
   );
 }

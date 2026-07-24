@@ -54,8 +54,8 @@ Then publish the `dist/` folder using GitHub Pages.
 
 ## Brand and Content Edits
 
-- Place the 16:9 GOVIETNAMEZE logo at `public/assets/logo.png`. `public/logo.png` remains a fallback if the assets logo is missing.
-- The interface, receipt preview, and exported PDF use Bricolage Grotesque.
+- Place the 16:9 GOVIETNAMEZE logo at `public/assets/govietnameze-logo.png`. The website header, receipt preview, PDF export, and favicon all use this deployed asset path.
+- Headings, buttons, and brand text use Bricolage Grotesque. Body text, form content, receipt information, and footers use Be Vietnam Pro.
 - Edit employee names in `src/constants/employees.js`.
 - Edit expense categories in `src/constants/categories.js`.
 - Edit fieldtrip suggestions and fieldtrip codes in `src/constants/fieldtrips.js`.

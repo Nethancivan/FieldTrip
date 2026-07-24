@@ -1,50 +1,31 @@
-import { formatDateTimeDisplay, getTimezoneLabel } from "../utils/datetime";
-
-function FooterField({ label, value }) {
-  return (
-    <div className="receipt-field">
-      <div className="receipt-field-label">{label}</div>
-      <div className="receipt-field-value">{value}</div>
-    </div>
-  );
-}
-
-export default function ReceiptFooter({ createdAt, exportedAt }) {
-  const timezone = getTimezoneLabel(createdAt);
-
+export default function ReceiptFooter() {
   return (
     <footer className="receipt-footer" data-pdf-block="true">
-      <div className="receipt-footer-meta">
-        <FooterField
-          label="Record Created At"
-          value={`${formatDateTimeDisplay(createdAt)} ${timezone}`}
-        />
-        <FooterField
-          label="Exported At"
-          value={
-            exportedAt
-              ? `${formatDateTimeDisplay(exportedAt)} ${getTimezoneLabel(exportedAt)}`
-              : "Chưa xuất PDF"
-          }
-        />
+      <div className="receipt-footer-credit">
+        <span className="receipt-footer-label">DIRECTED BY</span>
+        <strong className="receipt-footer-brand">GOVIETNAMEZE</strong>
+        <p className="receipt-footer-note">
+          Phiếu chi được tạo bởi GOVIETNAMEZE.
+        </p>
       </div>
 
-      <div className="footer-credit">
-        <div className="footer-label">DIRECTED BY</div>
-        <div className="footer-brand">GOVIETNAMEZE</div>
-        <div className="footer-product">
-          Sản phẩm được phát triển bởi GOVIETNAMEZE.
+      <div className="receipt-footer-company">
+        <strong>
+          CÔNG TY TNHH TRUYỀN THÔNG VÀ QUẢNG BÁ VĂN HÓA GOVIETNAMEZE
+        </strong>
+        <span className="receipt-footer-tagline">
+          DI SẢN · CÔNG NGHỆ · SÁNG TẠO
+        </span>
+
+        <div className="receipt-footer-contact">
+          <span>Mã số thuế: 0319327338</span>
+          <span>Điện thoại: 0356437530</span>
+          <span>Email: contact@govietnameze.vn</span>
         </div>
-      </div>
 
-      <div className="footer-company">
-        <strong>GOVIETNAMEZE</strong>
-        <div>DI SẢN - CÔNG NGHỆ - SÁNG TẠO</div>
-        <div>Mã số thuế: 0319327338</div>
-        <div>
+        <p>
           Địa chỉ: Tầng 2, số 02 Song Hành, Phường Bình Trưng, Thành phố Hồ Chí Minh, Việt Nam
-        </div>
-        <div>Email: contact@govietnameze.vn</div>
+        </p>
       </div>
     </footer>
   );

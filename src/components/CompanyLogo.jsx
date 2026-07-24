@@ -1,26 +1,16 @@
 import { brand } from "../constants/brand";
 
-export default function CompanyLogo({ className = "" }) {
-  const handleLogoError = (event) => {
-    const image = event.currentTarget;
-
-    if (image.dataset.logoFallbackApplied === "true") {
-      return;
-    }
-
-    image.dataset.logoFallbackApplied = "true";
-    image.src = brand.fallbackLogoPath;
-  };
+export default function CompanyLogo({ variant = "receipt", className = "" }) {
+  const wrapperClass =
+    variant === "website" ? "website-logo-wrapper" : "receipt-logo-wrapper";
 
   return (
-    <div className={`company-logo-wrapper ${className}`.trim()}>
+    <div className={[wrapperClass, className].filter(Boolean).join(" ")}>
       <img
-        className="company-logo"
+        className="govietnameze-logo"
         src={brand.logoPath}
-        data-logo-fallback-src={brand.fallbackLogoPath}
-        alt="Logo GOVIETNAMEZE"
+        alt="GOVIETNAMEZE"
         loading="eager"
-        onError={handleLogoError}
       />
     </div>
   );

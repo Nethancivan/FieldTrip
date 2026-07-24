@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -13,7 +13,7 @@
     min-width: 320px;
     background: var(--brand-background);
     color: var(--brand-text);
-    font-family: var(--brand-font);
+    font-family: var(--font-body);
     text-rendering: optimizeLegibility;
   }
 
@@ -26,13 +26,13 @@
 
   html,
   body,
-  button,
   input,
+  table,
   select,
   textarea,
-  .receipt-document,
-  .receipt-document * {
-    font-family: var(--brand-font);
+  .receipt-body,
+  .receipt-body * {
+    font-family: var(--font-body);
   }
 
   button,
@@ -40,6 +40,23 @@
   select,
   textarea {
     font: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  button,
+  .brand-name,
+  .receipt-company,
+  .receipt-subtitle,
+  .receipt-title,
+  .receipt-footer-label,
+  .receipt-footer-brand,
+  .receipt-footer-tagline,
+  .website-footer-brand,
+  .website-footer-tagline {
+    font-family: var(--font-heading);
   }
 
   button:focus-visible,
@@ -75,8 +92,8 @@
     gap: 14px;
   }
 
-  .company-logo-wrapper {
-    width: 140px;
+  .website-logo-wrapper,
+  .receipt-logo-wrapper {
     aspect-ratio: 16 / 9;
     display: flex;
     align-items: center;
@@ -85,11 +102,15 @@
     flex-shrink: 0;
   }
 
-  .company-logo-wrapper--app {
-    width: 96px;
+  .website-logo-wrapper {
+    width: 150px;
   }
 
-  .company-logo {
+  .receipt-logo-wrapper {
+    width: 135px;
+  }
+
+  .govietnameze-logo {
     display: block;
     width: 100%;
     height: 100%;
@@ -456,11 +477,11 @@
   }
 
   .receipt-document {
-    overflow: hidden;
+    overflow: visible;
     border-radius: var(--brand-radius);
     background: var(--brand-surface);
     color: var(--brand-text);
-    font-family: var(--brand-font);
+    font-family: var(--font-body);
   }
 
   .receipt-document--preview {
@@ -575,6 +596,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .receipt-fields--audit {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .receipt-field {
     display: grid;
     gap: 7px;
@@ -632,61 +657,80 @@
   }
 
   .receipt-footer {
+    width: 100%;
     margin-top: 28px;
     padding-top: 18px;
-    border-top: 1px solid #d9d9d9;
+    border-top: 1px solid #d8d8d8;
+    font-family: var(--font-body);
     break-inside: avoid;
     page-break-inside: avoid;
+    overflow: visible;
   }
 
-  .receipt-footer-meta {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-    margin-bottom: 22px;
+  .receipt-footer-credit {
+    margin-bottom: 16px;
   }
 
-  .footer-credit {
-    display: grid;
-    gap: 0;
-  }
-
-  .footer-label {
+  .receipt-footer-label {
+    display: block;
+    margin-bottom: 3px;
+    font-family: var(--font-heading);
     color: #777777;
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.14em;
     line-height: 1.25;
   }
 
-  .footer-brand {
-    margin-top: 4px;
+  .receipt-footer-brand {
+    display: block;
+    font-family: var(--font-heading);
     color: var(--brand-text);
-    font-size: 18px;
-    font-weight: 750;
-    line-height: 1.2;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.15;
   }
 
-  .footer-product {
-    margin-top: 6px;
+  .receipt-footer-note {
+    margin: 5px 0 0;
     color: #777777;
-    font-size: 11px;
-    line-height: 1.45;
+    font-size: 9px;
+    line-height: 1.5;
   }
 
-  .footer-company {
-    margin-top: 16px;
+  .receipt-footer-company {
     color: #555555;
-    font-size: 10px;
+    font-size: 8.5px;
     line-height: 1.55;
   }
 
-  .footer-company strong {
+  .receipt-footer-company > strong {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
     color: #333333;
-    font-size: 11px;
-    font-weight: 800;
+    font-size: 9px;
+    font-weight: 700;
+  }
+
+  .receipt-footer-tagline {
+    display: block;
+    margin-bottom: 8px;
+    font-family: var(--font-heading);
+    color: #666666;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .receipt-footer-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin-bottom: 4px;
+  }
+
+  .receipt-footer-company p {
+    margin: 0;
   }
 
   .receipt-document--export .receipt-company {
@@ -719,21 +763,69 @@
     font-size: 2rem;
   }
 
-  .receipt-document--export .footer-label,
-  .receipt-document--export .footer-product {
+  .website-footer {
+    width: 100%;
+    margin-top: 64px;
+    padding: 40px 24px 28px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    background: #f7f7f5;
+    color: #242424;
+  }
+
+  .website-footer-inner {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .website-footer-brand {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .website-footer-tagline {
+    display: block;
+    margin-top: 8px;
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+
+  .website-footer-information {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 32px;
+    margin-top: 28px;
+    font-family: var(--font-body);
     font-size: 13px;
+    line-height: 1.6;
   }
 
-  .receipt-document--export .footer-brand {
-    font-size: 22px;
+  .website-footer-information span {
+    display: block;
   }
 
-  .receipt-document--export .footer-company {
+  .website-footer-information a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .website-footer-information a:hover {
+    text-decoration: underline;
+  }
+
+  .website-footer-description {
+    margin: 28px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    font-family: var(--font-body);
+    color: #696969;
     font-size: 12px;
-  }
-
-  .receipt-document--export .footer-company strong {
-    font-size: 13px;
+    line-height: 1.6;
   }
 
   .sticky-action {
@@ -851,27 +943,15 @@
     font-size: 2rem;
   }
 
-  .footer-label,
-  .footer-product {
-    font-size: 13px;
-  }
-
-  .footer-brand {
-    font-size: 22px;
-  }
-
-  .footer-company {
-    font-size: 12px;
-  }
-
-  .footer-company strong {
-    font-size: 13px;
-  }
 }
 
 @media (max-width: 719px) {
   .app-shell {
     padding-bottom: 154px;
+  }
+
+  .website-logo-wrapper {
+    width: 124px;
   }
 
   .desktop-action {
@@ -888,12 +968,22 @@
 
   .receipt-fields,
   .receipt-fields--expense,
-  .receipt-footer-meta {
+  .receipt-fields--audit {
     grid-template-columns: 1fr;
   }
 
   .receipt-evidence-list {
     gap: 12px;
+  }
+
+  .website-footer {
+    margin-top: 40px;
+    padding: 32px 20px calc(24px + 96px + env(safe-area-inset-bottom));
+  }
+
+  .website-footer-information {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
 

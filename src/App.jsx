@@ -5,6 +5,7 @@ import ExpenseForm from "./components/ExpenseForm";
 import ReceiptDocument from "./components/ReceiptDocument";
 import ReceiptPreview from "./components/ReceiptPreview";
 import StickyActionBar from "./components/StickyActionBar";
+import WebsiteFooter from "./components/WebsiteFooter";
 import { copy } from "./constants/copy";
 import { useExpenseForm } from "./hooks/useExpenseForm";
 import { calculateVatTotals } from "./utils/currency";
@@ -177,31 +178,46 @@ export default function App() {
   const canDownload = Boolean(snapshot) && !isDirty && !isExporting && areReceiptAssetsReady;
 
   return (
-    <main className="app-shell">
-      <div className="app-container">
-        <AppHeader />
-        <div className="workspace-grid">
-          <ExpenseForm
-            formApi={formApi}
-            isGenerating={isGenerating}
-            onGenerate={handleGenerate}
-            liveMessage={liveMessage}
-            liveTone={liveTone}
-          />
-          <div ref={previewRef}>
-            <ReceiptPreview
-              snapshot={snapshot}
-              exportedAt={exportedAt}
-              isDirty={isDirty}
-              isExporting={isExporting}
-              exportMessage={exportMessage}
-              exportTone={exportTone}
-              onDownload={handleDownload}
-              canDownload={canDownload}
+    <>
+      <main className="app-shell">
+        <div className="app-container">
+          <AppHeader />
+          <div className="workspace-grid">
+            <ExpenseForm
+              formApi={formApi}
+              isGenerating={isGenerating}
+              onGenerate={handleGenerate}
+              liveMessage={liveMessage}
+              liveTone={liveTone}
             />
+            <div ref={previewRef}>
+              <ReceiptPreview
+                snapshot={snapshot}
+                exportedAt={exportedAt}
+                isDirty={isDirty}
+                isExporting={isExporting}
+                exportMessage={exportMessage}
+                exportTone={exportTone}
+                onDownload={handleDownload}
+                canDownload={canDownload}
+              />
+            </div>
           </div>
         </div>
-      </div>
+
+        <div className="receipt-export-host" aria-hidden="true">
+          {snapshot ? (
+            <ReceiptDocument
+              snapshot={snapshot}
+              exportedAt={exportedAt}
+              mode="export"
+              documentRef={exportRef}
+            />
+          ) : null}
+        </div>
+      </main>
+
+      <WebsiteFooter />
 
       <StickyActionBar
         disabled={isGenerating || formApi.isProcessingPhotos}
@@ -210,17 +226,6 @@ export default function App() {
         liveTone={liveTone}
         onGenerate={handleGenerate}
       />
-
-      <div className="receipt-export-host" aria-hidden="true">
-        {snapshot ? (
-          <ReceiptDocument
-            snapshot={snapshot}
-            exportedAt={exportedAt}
-            mode="export"
-            documentRef={exportRef}
-          />
-        ) : null}
-      </div>
-    </main>
+    </>
   );
 }
