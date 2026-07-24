@@ -194,6 +194,25 @@
     color: var(--brand-text-muted);
   }
 
+  .checkbox-control {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--brand-text-secondary);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .checkbox-control input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--brand-primary);
+    flex: 0 0 auto;
+  }
+
   textarea.form-control {
     min-height: 132px;
     resize: vertical;
@@ -560,38 +579,28 @@
     grid-column: 1 / -1;
   }
 
-  .receipt-evidence-grid {
+  .receipt-evidence-list {
     display: grid;
-    gap: 16px;
+    gap: 18px;
+    width: 100%;
   }
 
-  .receipt-evidence-row {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-  }
-
-  .receipt-evidence-row--single {
-    grid-template-columns: 1fr;
-  }
-
-  .receipt-evidence-item {
+  .receipt-image-wrapper {
+    width: 100%;
     overflow: hidden;
     margin: 0;
     border: 1px solid var(--brand-border);
-    border-radius: 14px;
-    background: var(--brand-surface);
+    border-radius: 12px;
+    background: var(--brand-background);
   }
 
-  .receipt-evidence-item img {
+  .receipt-image {
     width: 100%;
-    height: 360px;
     display: block;
+    height: auto;
+    margin: 0;
     object-fit: contain;
-  }
-
-  .receipt-evidence-row--single img {
-    height: 560px;
+    object-position: center;
   }
 
   .receipt-footer-grid {
@@ -785,20 +794,8 @@
     grid-template-columns: 1fr;
   }
 
-  .receipt-evidence-grid {
+  .receipt-evidence-list {
     gap: 12px;
-  }
-
-  .receipt-evidence-row {
-    gap: 12px;
-  }
-
-  .receipt-evidence-item img {
-    height: 210px;
-  }
-
-  .receipt-evidence-row--single img {
-    height: 320px;
   }
 }
 

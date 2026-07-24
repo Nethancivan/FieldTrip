@@ -26,6 +26,6 @@ export function createPdfFilename(snapshot, exportedAt) {
   const timestamp = formatTimestampForFilename(exportedAt);
   const receiptId = safeSegment(snapshot.receiptId, "EXP");
   const employee = safeSegment(getEmployeeFinalName(snapshot.employee), "Nhan-su");
-  const amount = String(snapshot.amountRaw || "0").replace(/\D/g, "");
+  const amount = String(snapshot.finalAmountRaw || snapshot.amountRaw || "0").replace(/\D/g, "");
   return `${timestamp}_${receiptId}_${employee}_${amount}.pdf`;
 }

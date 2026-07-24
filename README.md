@@ -61,6 +61,15 @@ Then publish the `dist/` folder using GitHub Pages.
 - Brand colors and UI tokens are centralized in `src/styles/brand.css`.
 - Interface text is centralized in `src/constants/copy.js`.
 
+## VAT Behavior
+
+The form includes `Số tiền đã bao gồm VAT 10%`.
+
+- Checked: the entered amount is treated as the final amount.
+- Unchecked: the app adds 10% VAT and rounds the final amount to whole VND.
+
+The Phiếu thực chi preview and PDF only show the final `Số tiền`; they do not show the VAT checkbox or VAT state.
+
 ## Privacy
 
 All form data, evidence photos, receipt rendering, and PDF generation remain on the user's device. The app does not use a backend, database, analytics, tracking, remote fonts, storage API, Google Drive API, or automatic browser persistence. Refreshing or closing the page clears the working record.

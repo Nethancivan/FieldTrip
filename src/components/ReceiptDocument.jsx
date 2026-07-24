@@ -15,19 +15,11 @@ function ReceiptField({ label, value, className = "", amount = false }) {
   );
 }
 
-function chunkPhotos(photos) {
-  const rows = [];
-  for (let index = 0; index < photos.length; index += 2) {
-    rows.push(photos.slice(index, index + 2));
-  }
-  return rows;
-}
-
 export default function ReceiptDocument({ snapshot, exportedAt, mode = "preview", documentRef }) {
   const location = snapshot.location || "Không ghi nhận";
   const fieldtripCode = snapshot.fieldtripCode || "Không ghi nhận";
   const expenseDateTime = `${formatDateDisplay(snapshot.expenseDate)} ${snapshot.expenseTime}`;
-  const photoRows = chunkPhotos(snapshot.photos);
+  const displayAmount = snapshot.finalAmountRaw || snapshot.amountRaw;
 
   return (
     <article
@@ -48,7 +40,7 @@ export default function ReceiptDocument({ snapshot, exportedAt, mode = "preview"
       <ReceiptSection title="Thông tin thực chi">
         <div className="receipt-fields receipt-fields--expense">
           <ReceiptField label="Hạng mục chi phí" value={snapshot.category} />
-          <ReceiptField label="Số tiền" value={formatVnd(snapshot.amountRaw)} amount />
+          <ReceiptField label="Số tiền" value={formatVnd(displayAmount)} amount />
           <ReceiptField label="Ngày và giờ phát sinh" value={expenseDateTime} />
           <ReceiptField label="Địa điểm" value={location} />
           <ReceiptField
@@ -63,23 +55,20 @@ export default function ReceiptDocument({ snapshot, exportedAt, mode = "preview"
         <h2 className="receipt-section-title" data-pdf-block="true">
           Hình ảnh chứng từ
         </h2>
-        <div className="receipt-evidence-grid">
-          {photoRows.map((row, rowIndex) => (
-            <div
-              className={`receipt-evidence-row ${row.length === 1 ? "receipt-evidence-row--single" : ""}`}
+        <div className="receipt-evidence-list">
+          {snapshot.photos.map((photo, index) => (
+            <figure
+              className="receipt-image-wrapper"
               data-pdf-block="true"
-              key={row.map((photo) => photo.id).join("-")}
+              key={photo.id}
             >
-              {row.map((photo, index) => (
-                <figure className="receipt-evidence-item" key={photo.id}>
-                  <img
-                    src={photo.dataUrl}
-                    alt={`Ảnh chứng từ ${rowIndex * 2 + index + 1}`}
-                    loading="eager"
-                  />
-                </figure>
-              ))}
-            </div>
+              <img
+                className="receipt-image"
+                src={photo.dataUrl}
+                alt={`Ảnh chứng từ ${index + 1}`}
+                loading="eager"
+              />
+            </figure>
           ))}
         </div>
       </section>

@@ -15,6 +15,7 @@ function createInitialForm() {
     expenseDate: getLocalDateInputValue(openedAt),
     expenseTime: getLocalTimeInputValue(openedAt),
     amountRaw: "",
+    isVatIncluded: false,
     category: "",
     description: "",
     location: "",

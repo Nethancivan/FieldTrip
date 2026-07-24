@@ -28,6 +28,7 @@ export const copy = {
     expenseDate: "Ngày phát sinh",
     expenseTime: "Thời gian phát sinh",
     amount: "Số tiền",
+    vatIncluded: "Số tiền đã bao gồm VAT 10%",
     category: "Hạng mục chi phí",
     description: "Nội dung chi tiết",
     location: "Địa điểm",

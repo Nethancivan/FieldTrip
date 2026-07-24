@@ -136,13 +136,24 @@ export default function ExpenseForm({
 
         <FormField id="amount" label={copy.fields.amount} required error={errors.amountRaw}>
           {({ describedBy }) => (
-            <AmountInput
-              id="amount"
-              value={form.amountRaw}
-              error={errors.amountRaw}
-              describedBy={describedBy}
-              onChange={(value) => updateField("amountRaw", value)}
-            />
+            <>
+              <AmountInput
+                id="amount"
+                value={form.amountRaw}
+                error={errors.amountRaw}
+                describedBy={describedBy}
+                onChange={(value) => updateField("amountRaw", value)}
+              />
+              <label className="checkbox-control" htmlFor="isVatIncluded">
+                <input
+                  id="isVatIncluded"
+                  type="checkbox"
+                  checked={form.isVatIncluded}
+                  onChange={(event) => updateField("isVatIncluded", event.target.checked)}
+                />
+                <span>{copy.fields.vatIncluded}</span>
+              </label>
+            </>
           )}
         </FormField>
 

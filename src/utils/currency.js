@@ -23,3 +23,15 @@ export function formatVnd(rawValue) {
 export function isPositiveIntegerAmount(rawValue) {
   return /^\d+$/.test(rawValue) && Number(rawValue) > 0;
 }
+
+export function calculateVatTotals(rawValue, isVatIncluded) {
+  const inputAmount = Number(normalizeAmount(rawValue) || 0);
+  const vatAmount = isVatIncluded ? 0 : Math.round(inputAmount * 0.1);
+  const finalAmount = isVatIncluded ? inputAmount : inputAmount + vatAmount;
+
+  return {
+    inputAmountRaw: String(inputAmount),
+    vatAmountRaw: String(vatAmount),
+    finalAmountRaw: String(Math.round(finalAmount)),
+  };
+}

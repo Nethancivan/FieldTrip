@@ -7,6 +7,7 @@ import ReceiptPreview from "./components/ReceiptPreview";
 import StickyActionBar from "./components/StickyActionBar";
 import { copy } from "./constants/copy";
 import { useExpenseForm } from "./hooks/useExpenseForm";
+import { calculateVatTotals } from "./utils/currency";
 import { waitForFrames } from "./utils/datetime";
 import { waitForImagesInElement } from "./utils/imageLoading";
 import { createPdfFilename } from "./utils/pdfFilename";
@@ -23,13 +24,19 @@ function focusFirstInvalidField() {
 }
 
 function buildSnapshot(form, photos, createdAt) {
+  const totals = calculateVatTotals(form.amountRaw, form.isVatIncluded);
+
   return {
     employee: form.employee,
     fieldtrip: form.fieldtrip.trim(),
     fieldtripCode: form.fieldtripCode.trim(),
     expenseDate: form.expenseDate,
     expenseTime: form.expenseTime,
-    amountRaw: form.amountRaw,
+    inputAmountRaw: totals.inputAmountRaw,
+    vatAmountRaw: totals.vatAmountRaw,
+    finalAmountRaw: totals.finalAmountRaw,
+    amountRaw: totals.finalAmountRaw,
+    isVatIncluded: form.isVatIncluded,
     category: form.category,
     description: form.description.trim(),
     location: form.location.trim(),
