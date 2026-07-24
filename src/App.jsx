@@ -163,10 +163,7 @@ export default function App() {
 
       await waitForFrames(2);
       const { exportReceiptPdf } = await import("./utils/exportPdf");
-      await exportReceiptPdf(
-        exportRef.current,
-        createPdfFilename(snapshot, nextExportedAt),
-      );
+      await exportReceiptPdf(exportRef.current, createPdfFilename(snapshot));
       setExportTone("success");
       setExportMessage(copy.exportSuccess);
     } catch (error) {

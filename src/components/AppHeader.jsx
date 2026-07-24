@@ -1,11 +1,12 @@
 import { brand } from "../constants/brand";
 import { copy } from "../constants/copy";
+import CompanyLogo from "./CompanyLogo";
 
 export default function AppHeader() {
   return (
     <header className="app-header">
       <div className="brand-lockup">
-        <img className="brand-logo" src={brand.logoPath} alt="Logo GOVIETNAMEZE" />
+        <CompanyLogo className="company-logo-wrapper--app" />
         <div>
           <p className="section-note">{brand.companyName}</p>
           <h1 className="app-title">{brand.productName}</h1>

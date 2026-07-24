@@ -1,31 +1,25 @@
-import { formatTimestampForFilename } from "./datetime";
-
-function removeVietnameseMarks(value) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/Đ/g, "D");
-}
-
-function safeSegment(value, fallback) {
-  const cleaned = removeVietnameseMarks(value || fallback)
-    .replace(/[\\/:*?"<>|]+/g, "")
+function safeReceiptCode(receiptCode) {
+  const cleaned = String(receiptCode || "EXP")
+    .replace(/[<>:"/\\|?*\u0000-\u001f]/g, "-")
     .trim()
     .replace(/\s+/g, "-")
-    .replace(/[^A-Za-z0-9_-]/g, "");
-  return cleaned || fallback;
+    .replace(/-+/g, "-")
+    .replace(/^\.+|\.+$/g, "");
+
+  return cleaned || "EXP";
 }
 
-function getEmployeeFinalName(employee) {
-  const parts = String(employee || "").trim().split(/\s+/).filter(Boolean);
-  return parts[parts.length - 1] || "Nhan-su";
+function safeFinalAmount(snapshot) {
+  const rawAmount = snapshot?.finalAmountRaw ?? snapshot?.amountRaw ?? 0;
+  const numericAmount = Number(String(rawAmount).replace(/[^\d.-]/g, ""));
+
+  if (Number.isFinite(numericAmount)) {
+    return Math.round(Math.max(0, numericAmount)).toString();
+  }
+
+  return String(rawAmount).replace(/\D/g, "") || "0";
 }
 
-export function createPdfFilename(snapshot, exportedAt) {
-  const timestamp = formatTimestampForFilename(exportedAt);
-  const receiptId = safeSegment(snapshot.receiptId, "EXP");
-  const employee = safeSegment(getEmployeeFinalName(snapshot.employee), "Nhan-su");
-  const amount = String(snapshot.finalAmountRaw || snapshot.amountRaw || "0").replace(/\D/g, "");
-  return `${timestamp}_${receiptId}_${employee}_${amount}.pdf`;
+export function createPdfFilename(snapshot) {
+  return `${safeReceiptCode(snapshot?.receiptId)}_${safeFinalAmount(snapshot)}.pdf`;
 }

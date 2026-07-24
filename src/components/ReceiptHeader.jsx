@@ -1,10 +1,11 @@
 import { brand } from "../constants/brand";
+import CompanyLogo from "./CompanyLogo";
 
 export default function ReceiptHeader({ receiptId }) {
   return (
     <div className="receipt-topline" data-pdf-block="true">
       <div className="receipt-logo-lockup">
-        <img className="receipt-logo" src={brand.logoPath} alt="Logo GOVIETNAMEZE" />
+        <CompanyLogo />
         <div>
           <p className="receipt-company">{brand.companyName}</p>
           <h2 className="receipt-title">PHIẾU THỰC CHI</h2>

@@ -54,7 +54,8 @@ Then publish the `dist/` folder using GitHub Pages.
 
 ## Brand and Content Edits
 
-- Replace the logo by overwriting `public/logo.png`. Keep the same path so the website, preview, and PDF export update together.
+- Place the 16:9 GOVIETNAMEZE logo at `public/assets/logo.png`. `public/logo.png` remains a fallback if the assets logo is missing.
+- The interface, receipt preview, and exported PDF use Bricolage Grotesque.
 - Edit employee names in `src/constants/employees.js`.
 - Edit expense categories in `src/constants/categories.js`.
 - Edit fieldtrip suggestions and fieldtrip codes in `src/constants/fieldtrips.js`.
@@ -72,7 +73,7 @@ The Phiếu thực chi preview and PDF only show the final `Số tiền`; they d
 
 ## Privacy
 
-All form data, evidence photos, receipt rendering, and PDF generation remain on the user's device. The app does not use a backend, database, analytics, tracking, remote fonts, storage API, Google Drive API, or automatic browser persistence. Refreshing or closing the page clears the working record.
+All form data, evidence photos, receipt rendering, and PDF generation remain on the user's device. The app does not use a backend, database, analytics, tracking, storage API, Google Drive API, or automatic browser persistence. Refreshing or closing the page clears the working record.
 
 The app downloads the PDF directly through the browser. It does not upload the PDF to a server and does not automatically save anything to Google Drive or another third-party service.
 
