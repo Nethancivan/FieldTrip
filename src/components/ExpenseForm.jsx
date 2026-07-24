@@ -157,15 +157,16 @@ export default function ExpenseForm({
                 describedBy={describedBy}
                 onChange={(value) => updateField("amountRaw", value)}
               />
-              <label className="checkbox-control" htmlFor="isVatIncluded">
+              <div className="vat-checkbox-field">
                 <input
-                  id="isVatIncluded"
+                  id="vatIncluded"
+                  name="vatIncluded"
                   type="checkbox"
                   checked={form.isVatIncluded}
                   onChange={(event) => updateField("isVatIncluded", event.target.checked)}
                 />
-                <span>{copy.fields.vatIncluded}</span>
-              </label>
+                <label htmlFor="vatIncluded">{copy.fields.vatIncluded}</label>
+              </div>
             </>
           )}
         </FormField>

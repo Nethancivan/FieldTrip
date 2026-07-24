@@ -58,7 +58,7 @@
   .app-title,
   .section-heading,
   .field-label,
-  .checkbox-control,
+  .vat-checkbox-field label,
   .photo-count,
   .receipt-company,
   .receipt-title,
@@ -148,7 +148,7 @@
   }
 
   .form-page-content {
-    padding-bottom: calc(120px + env(safe-area-inset-bottom));
+    padding-bottom: calc(130px + env(safe-area-inset-bottom));
   }
 
   .app-container {
@@ -258,6 +258,17 @@
   .form-field {
     width: 100%;
     min-width: 0;
+    margin: 0;
+  }
+
+  .form-field input:not([type="checkbox"]):not([type="radio"]),
+  .form-field select,
+  .form-field textarea {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
 
   .field-label {
@@ -360,14 +371,18 @@
     max-width: 100%;
     min-width: 0;
     height: 56px;
+    min-height: 56px;
+    max-height: 56px;
     padding: 0 16px;
+    margin: 0;
     border-radius: 14px;
     box-sizing: border-box;
     background-color: #fff;
     color: #171717;
     font-family: var(--font-secondary);
     font-size: 16px;
-    line-height: 1.2;
+    font-weight: 400;
+    line-height: normal;
     text-align: left;
     overflow: hidden;
     -webkit-appearance: none;
@@ -376,7 +391,11 @@
 
   input[type="date"]::-webkit-date-and-time-value,
   input[type="time"]::-webkit-date-and-time-value {
+    display: flex;
+    align-items: center;
     min-width: 0;
+    height: 100%;
+    padding: 0;
     text-align: left;
   }
 
@@ -387,27 +406,53 @@
     padding: 0;
   }
 
-  .checkbox-control {
-    min-height: 44px;
+  .vat-checkbox-field {
+    grid-column: 1 / -1;
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: var(--brand-text-secondary);
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    line-height: 1.35;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    margin: 4px 0 8px;
+    padding: 0;
   }
 
-  .checkbox-control input {
-    width: 20px;
-    height: 20px;
+  .vat-checkbox-field input[type="checkbox"] {
+    display: block;
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    max-width: 24px !important;
+    padding: 0;
+    margin: 0;
     accent-color: var(--brand-primary);
-    flex: 0 0 auto;
+    flex: 0 0 24px;
+    cursor: pointer;
+  }
+
+  .vat-checkbox-field label {
+    display: block;
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    color: #555;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: normal;
+    overflow-wrap: break-word;
   }
 
   textarea.form-control {
-    min-height: 132px;
+    min-height: 120px;
     font-family: var(--font-secondary);
     font-size: 15px;
     font-weight: 400;
@@ -977,6 +1022,11 @@
     min-height: 56px;
   }
 
+  .mobile-submit-bar button {
+    width: 100%;
+    min-height: 56px;
+  }
+
   .sticky-action-status {
     min-height: 20px;
     margin: 0 0 8px;
@@ -1079,23 +1129,55 @@
   }
 }
 
-@media (max-width: 719px) {
-  .app-shell {
-    padding-bottom: calc(170px + env(safe-area-inset-bottom));
+@media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   .form-grid {
     grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .form-page-content {
+    padding-bottom: calc(130px + env(safe-area-inset-bottom));
   }
 
   .form-field,
-  .form-field input,
+  .vat-checkbox-field {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .form-field input:not([type="checkbox"]):not([type="radio"]),
   .form-field select,
   .form-field textarea {
     width: 100%;
     max-width: 100%;
     min-width: 0;
+  }
+
+  input.form-control:not([type="checkbox"]):not([type="radio"]),
+  select.form-control {
+    height: 56px;
+    min-height: 56px;
+  }
+
+  .vat-checkbox-field {
+    gap: 12px;
+    margin: 2px 0 4px;
+  }
+}
+
+@media (max-width: 719px) {
+  .app-shell {
+    padding-bottom: calc(170px + env(safe-area-inset-bottom));
   }
 
   .website-logo-wrapper {
