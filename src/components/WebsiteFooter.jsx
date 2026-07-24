@@ -14,13 +14,13 @@ export default function WebsiteFooter() {
             <strong>MST:</strong> 0319327338
           </span>
           <span>
-            <strong>ĐỊA CHỈ:</strong> Tầng 2, số 02 Song Hành, Phường Bình Trưng, Thành phố Hồ Chí Minh, Việt Nam
+            <strong>Địa chỉ:</strong> Tầng 2, số 02 Song Hành, Phường Bình Trưng, Thành phố Hồ Chí Minh, Việt Nam
           </span>
           <span>
-            <strong>ĐTH:</strong> 0356437530
+            <strong>Điện thoại:</strong> 0356437530
           </span>
           <span>
-            <strong>EMAIL:</strong>{" "}
+            <strong>Email:</strong>{" "}
             <a href="mailto:contact@govietnameze.vn">contact@govietnameze.vn</a>
           </span>
         </div>
