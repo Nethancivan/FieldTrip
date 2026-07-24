@@ -21,18 +21,27 @@ export default function ExpenseForm({
     photoMessage,
     isProcessingPhotos,
     updateField,
+    updateFields,
     addPhotos,
     removePhoto,
   } = formApi;
   const descriptionLength = form.description.length;
+  const selectedFieldtrip = fieldtrips.find((fieldtrip) => fieldtrip.name === form.fieldtrip);
+  const hasUnknownFieldtrip = Boolean(form.fieldtrip) && !selectedFieldtrip;
+  const fieldtripError =
+    errors.fieldtrip ||
+    (hasUnknownFieldtrip
+      ? "Chuyến công tác này không còn trong danh sách. Vui lòng chọn lại."
+      : "");
 
-  const handleFieldtripBlur = (event) => {
-    const value = event.target.value.trim();
-    updateField("fieldtrip", value);
-    const matchedFieldtrip = fieldtrips.find((fieldtrip) => fieldtrip.name === value);
-    if (matchedFieldtrip && !form.fieldtripCode.trim()) {
-      updateField("fieldtripCode", matchedFieldtrip.code);
-    }
+  const handleFieldtripChange = (event) => {
+    const selectedName = event.target.value;
+    const matchedFieldtrip = fieldtrips.find((fieldtrip) => fieldtrip.name === selectedName);
+
+    updateFields({
+      fieldtrip: selectedName,
+      fieldtripCode: matchedFieldtrip?.code || "",
+    });
   };
 
   return (
@@ -66,27 +75,30 @@ export default function ExpenseForm({
           )}
         </FormField>
 
-        <FormField id="fieldtrip" label={copy.fields.fieldtrip} required error={errors.fieldtrip}>
+        <FormField id="fieldtrip" label={copy.fields.fieldtrip} required error={fieldtripError}>
           {({ describedBy }) => (
-            <>
-              <input
-                id="fieldtrip"
-                className="form-control"
-                type="text"
-                list="fieldtrip-suggestions"
-                value={form.fieldtrip}
-                placeholder={copy.placeholders.fieldtrip}
-                aria-invalid={errors.fieldtrip ? "true" : "false"}
-                aria-describedby={describedBy}
-                onChange={(event) => updateField("fieldtrip", event.target.value)}
-                onBlur={handleFieldtripBlur}
-              />
-              <datalist id="fieldtrip-suggestions">
-                {fieldtrips.map((fieldtrip) => (
-                  <option key={fieldtrip.code} value={fieldtrip.name} label={fieldtrip.code} />
-                ))}
-              </datalist>
-            </>
+            <select
+              id="fieldtrip"
+              name="fieldtrip"
+              className="form-control"
+              value={form.fieldtrip}
+              required
+              aria-invalid={fieldtripError ? "true" : "false"}
+              aria-describedby={describedBy}
+              onChange={handleFieldtripChange}
+            >
+              <option value="">{copy.placeholders.fieldtrip}</option>
+              {hasUnknownFieldtrip ? (
+                <option value={form.fieldtrip}>
+                  Chuyến công tác không còn trong danh sách: {form.fieldtrip}
+                </option>
+              ) : null}
+              {fieldtrips.map((fieldtrip) => (
+                <option key={fieldtrip.code} value={fieldtrip.name}>
+                  {fieldtrip.name}
+                </option>
+              ))}
+            </select>
           )}
         </FormField>
 
@@ -94,14 +106,15 @@ export default function ExpenseForm({
           {({ describedBy }) => (
             <input
               id="fieldtripCode"
-              className="form-control"
+              name="fieldtripCode"
+              className="form-control trip-code-input"
               type="text"
               value={form.fieldtripCode}
               placeholder={copy.placeholders.fieldtripCode}
               aria-invalid={errors.fieldtripCode ? "true" : "false"}
               aria-describedby={describedBy}
-              onChange={(event) => updateField("fieldtripCode", event.target.value)}
-              onBlur={(event) => updateField("fieldtripCode", event.target.value.trim())}
+              readOnly
+              aria-readonly="true"
             />
           )}
         </FormField>
@@ -201,7 +214,7 @@ export default function ExpenseForm({
           )}
         </FormField>
 
-        <FormField id="location" label={copy.fields.location} error={errors.location} className="span-full">
+        <FormField id="location" label={copy.fields.location} error={errors.location} className="span-full location-field">
           {({ describedBy }) => (
             <input
               id="location"

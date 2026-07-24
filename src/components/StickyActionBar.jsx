@@ -9,7 +9,7 @@ export default function StickyActionBar({
   onGenerate,
 }) {
   return (
-    <div className="sticky-action" aria-label="Khu vực thao tác chính">
+    <div className="sticky-action mobile-submit-bar" aria-label="Khu vực thao tác chính">
       <div className="sticky-action-inner">
         <p
           className={`sticky-action-status ${liveTone === "error" ? "live-region-error" : ""} ${liveTone === "success" ? "live-region-success" : ""}`}

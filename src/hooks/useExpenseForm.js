@@ -92,6 +92,42 @@ export function useExpenseForm({ onDirty }) {
     [clearFieldErrorIfValid, markDirty, photos],
   );
 
+  const updateFields = useCallback(
+    (updates) => {
+      setForm((current) => {
+        const normalizedUpdates = Object.entries(updates).reduce(
+          (nextUpdates, [fieldName, value]) => ({
+            ...nextUpdates,
+            [fieldName]: fieldName === "amountRaw" ? normalizeAmount(value) : value,
+          }),
+          {},
+        );
+
+        const hasChanges = Object.entries(normalizedUpdates).some(
+          ([fieldName, value]) => current[fieldName] !== value,
+        );
+
+        if (!hasChanges) {
+          return current;
+        }
+
+        const next = { ...current, ...normalizedUpdates };
+        const fieldsToValidate = new Set(Object.keys(normalizedUpdates));
+
+        if (fieldsToValidate.has("fieldtrip")) {
+          fieldsToValidate.add("fieldtripCode");
+        }
+
+        fieldsToValidate.forEach((fieldName) => {
+          clearFieldErrorIfValid(fieldName, next[fieldName], next, photos);
+        });
+        markDirty();
+        return next;
+      });
+    },
+    [clearFieldErrorIfValid, markDirty, photos],
+  );
+
   const addPhotos = useCallback(
     async (fileList) => {
       const files = Array.from(fileList || []);
@@ -205,6 +241,7 @@ export function useExpenseForm({ onDirty }) {
     photoMessage,
     isProcessingPhotos,
     updateField,
+    updateFields,
     addPhotos,
     removePhoto,
     validateAll,

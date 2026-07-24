@@ -37,8 +37,8 @@ export const copy = {
   placeholders: {
     employee: "Chọn nhân sự",
     category: "Chọn hạng mục",
-    fieldtrip: "CSR Khmer Trà Vinh",
-    fieldtripCode: "FT-CSR-KHMER-TV",
+    fieldtrip: "Chọn chuyến công tác",
+    fieldtripCode: "Tự động hiển thị theo chuyến công tác",
     amount: "1.250.000",
     description:
       "Taxi từ Trường Đại học Trà Vinh đến địa điểm khảo sát hoạt động CSR.",

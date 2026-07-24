@@ -1,4 +1,5 @@
 import { isPositiveIntegerAmount } from "./currency";
+import { fieldtrips } from "../constants/fieldtrips";
 
 const MIN_DESCRIPTION_CHARS = 10;
 
@@ -6,12 +7,37 @@ function meaningfulLength(value) {
   return String(value || "").trim().replace(/\s+/g, "").length;
 }
 
+function findFieldtripByName(value) {
+  const name = String(value || "").trim();
+  return fieldtrips.find((fieldtrip) => fieldtrip.name === name);
+}
+
 export function validateField(name, value, form, photos) {
   switch (name) {
     case "employee":
       return value ? "" : "Vui lòng chọn nhân sự.";
-    case "fieldtrip":
-      return String(value || "").trim() ? "" : "Vui lòng nhập tên chuyến công tác.";
+    case "fieldtrip": {
+      if (!String(value || "").trim()) {
+        return "Vui lòng chọn chuyến công tác.";
+      }
+      return findFieldtripByName(value)
+        ? ""
+        : "Chuyến công tác này không còn trong danh sách. Vui lòng chọn lại.";
+    }
+    case "fieldtripCode": {
+      if (!String(form?.fieldtrip || "").trim()) {
+        return "";
+      }
+
+      const selectedFieldtrip = findFieldtripByName(form.fieldtrip);
+      if (!selectedFieldtrip) {
+        return "";
+      }
+
+      return String(value || "").trim() === selectedFieldtrip.code
+        ? ""
+        : "Mã chuyến công tác không khớp với tên chuyến. Vui lòng chọn lại chuyến công tác.";
+    }
     case "expenseDate":
       return value ? "" : "Vui lòng chọn ngày phát sinh.";
     case "expenseTime":
@@ -43,6 +69,7 @@ export function validateExpenseForm(form, photos) {
   const fields = [
     "employee",
     "fieldtrip",
+    "fieldtripCode",
     "expenseDate",
     "expenseTime",
     "amountRaw",

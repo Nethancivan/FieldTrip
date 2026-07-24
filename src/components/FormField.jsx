@@ -11,7 +11,7 @@ export default function FormField({
   const noteId = `${id}-note`;
 
   return (
-    <div className={`field-stack ${className}`}>
+    <div className={["field-stack", "form-field", className].filter(Boolean).join(" ")}>
       <label className="field-label form-label" htmlFor={id}>
         {label}
         {required ? <span className="required-mark"> *</span> : null}
