@@ -5,6 +5,15 @@ import { waitForImagesInElement } from "./imageLoading";
 
 const PDF_MARGIN_MM = 14;
 const PDF_BLOCK_GAP_MM = 4;
+const REQUIRED_PDF_FONTS = [
+  '400 16px "Bricolage Grotesque"',
+  '600 16px "Bricolage Grotesque"',
+  '700 32px "Bricolage Grotesque"',
+  '800 32px "Bricolage Grotesque"',
+  '400 16px "Be Vietnam Pro"',
+  '500 16px "Be Vietnam Pro"',
+  '600 16px "Be Vietnam Pro"',
+];
 
 function getCssColor(variableName, fallback) {
   const value = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
@@ -18,6 +27,25 @@ function loadRenderedImage(dataUrl) {
     image.onerror = () => reject(new Error("Không thể đọc nội dung PDF đã render."));
     image.src = dataUrl;
   });
+}
+
+async function waitForRequiredFonts() {
+  if (!document.fonts?.ready) {
+    return;
+  }
+
+  await document.fonts.ready;
+  if (typeof document.fonts.load === "function") {
+    await Promise.all(REQUIRED_PDF_FONTS.map((font) => document.fonts.load(font)));
+  }
+
+  const fontsLoaded = REQUIRED_PDF_FONTS.every((font) => document.fonts.check(font));
+  if (!fontsLoaded) {
+    await new Promise((resolve) => {
+      window.setTimeout(resolve, 300);
+    });
+    await document.fonts.ready;
+  }
 }
 
 async function renderBlock(block) {
@@ -64,9 +92,7 @@ export async function exportReceiptPdf(receiptElement, filename) {
     throw new Error("Không tìm thấy nội dung phiếu để tạo PDF.");
   }
 
-  if (document.fonts?.ready) {
-    await document.fonts.ready;
-  }
+  await waitForRequiredFonts();
   await waitForFrames(2);
   await waitForImagesInElement(receiptElement);
   await waitForFrames(2);

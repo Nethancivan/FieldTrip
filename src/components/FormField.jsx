@@ -12,7 +12,7 @@ export default function FormField({
 
   return (
     <div className={`field-stack ${className}`}>
-      <label className="field-label" htmlFor={id}>
+      <label className="field-label form-label" htmlFor={id}>
         {label}
         {required ? <span className="required-mark"> *</span> : null}
       </label>

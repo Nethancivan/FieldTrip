@@ -7,14 +7,14 @@ export default function ReceiptHeader({ receiptId }) {
       <div className="receipt-logo-lockup">
         <CompanyLogo />
         <div>
-          <p className="receipt-company">{brand.companyName}</p>
+          <p className="receipt-company receipt-company-name">{brand.companyName}</p>
           <h2 className="receipt-title">PHIẾU THỰC CHI</h2>
           <p className="receipt-subtitle">FIELDTRIP EXPENSE RECORD</p>
         </div>
       </div>
       <div className="receipt-id-block">
-        <div className="receipt-id-label">Mã phiếu</div>
-        <div className="receipt-id-value">{receiptId}</div>
+        <div className="receipt-id-label receipt-label">Mã phiếu</div>
+        <div className="receipt-id-value receipt-code">{receiptId}</div>
       </div>
     </div>
   );

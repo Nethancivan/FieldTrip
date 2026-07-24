@@ -13,7 +13,9 @@
   --brand-focus: #0f766e;
   --brand-radius: 16px;
   --brand-shadow: 0 18px 45px rgba(34, 34, 34, 0.1);
-  --font-heading: "Bricolage Grotesque", sans-serif;
-  --font-body: "Be Vietnam Pro", sans-serif;
-  --brand-font: var(--font-body);
+  --font-primary: "Bricolage Grotesque", sans-serif;
+  --font-secondary: "Be Vietnam Pro", sans-serif;
+  --font-heading: var(--font-primary);
+  --font-body: var(--font-secondary);
+  --brand-font: var(--font-primary);
 }

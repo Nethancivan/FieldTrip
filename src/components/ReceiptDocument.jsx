@@ -5,19 +5,27 @@ import { formatVnd } from "../utils/currency";
 import { formatDateDisplay, formatDateTimeDisplay, getTimezoneLabel } from "../utils/datetime";
 
 function ReceiptField({ label, value, className = "", amount = false }) {
+  const isLongValue = className.includes("receipt-field--wide");
+  const valueClassName = [
+    "receipt-field-value",
+    "receipt-value",
+    amount ? "receipt-field-value--amount receipt-amount" : "",
+    isLongValue ? "receipt-value-long receipt-detail" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <div className={`receipt-field ${className}`}>
-      <div className="receipt-field-label">{label}</div>
-      <div className={`receipt-field-value ${amount ? "receipt-field-value--amount" : ""}`}>
-        {value}
-      </div>
+      <div className="receipt-field-label receipt-label">{label}</div>
+      <div className={valueClassName}>{value}</div>
     </div>
   );
 }
 
 function ReceiptAuditTrail({ createdAt, exportedAt }) {
   return (
-    <section className="receipt-section receipt-audit" data-pdf-block="true">
+    <section className="receipt-section receipt-audit receipt-metadata" data-pdf-block="true">
       <div className="receipt-fields receipt-fields--audit">
         <ReceiptField
           label="Record Created At"
