@@ -16,6 +16,10 @@ export const fieldtrips = [
     code: "PST-MV-Khmer",
   },
     {
+    name: "ShootingMV Khmer",
+    code: "PST-MV-Khmer",
+  },
+    {
     name: "PL02_FieldTrip2 Nghệ An",
     code: "PL02-FT-Nghean",
   },
