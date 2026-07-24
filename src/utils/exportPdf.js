@@ -1,6 +1,6 @@
 import { toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
-import { waitForFrames } from "./datetime";
+import { waitForNextPaint } from "./datetime";
 import { waitForImagesInElement } from "./imageLoading";
 
 const PDF_MARGIN_MM = 14;
@@ -49,12 +49,20 @@ async function waitForRequiredFonts() {
 }
 
 async function renderBlock(block) {
+  await waitForImagesInElement(block);
+  await waitForNextPaint();
+
   const dataUrl = await toPng(block, {
     backgroundColor: getCssColor("--brand-surface", "white"),
     cacheBust: true,
-    pixelRatio: 2,
+    pixelRatio: Math.max(2, window.devicePixelRatio || 1),
   });
   const image = await loadRenderedImage(dataUrl);
+
+  if (!image.naturalWidth || !image.naturalHeight) {
+    throw new Error("Khong the tao hinh anh phieu thuc chi.");
+  }
+
   return {
     dataUrl,
     width: image.naturalWidth || image.width,
@@ -93,9 +101,9 @@ export async function exportReceiptPdf(receiptElement, filename) {
   }
 
   await waitForRequiredFonts();
-  await waitForFrames(2);
+  await waitForNextPaint();
   await waitForImagesInElement(receiptElement);
-  await waitForFrames(2);
+  await waitForNextPaint();
 
   const blocks = Array.from(receiptElement.querySelectorAll("[data-pdf-block='true']")).filter(
     (block) => block.getBoundingClientRect().height > 0,

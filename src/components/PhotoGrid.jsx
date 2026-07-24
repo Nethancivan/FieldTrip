@@ -10,6 +10,7 @@ export default function PhotoGrid({ photos, onRemove }) {
           <img
             src={photo.dataUrl}
             alt={`Ảnh chứng từ ${index + 1}: ${photo.name}`}
+            decoding="async"
             loading="eager"
           />
           <button

@@ -55,3 +55,7 @@ export function waitForFrames(count = 2) {
     step(count);
   });
 }
+
+export function waitForNextPaint() {
+  return waitForFrames(2);
+}

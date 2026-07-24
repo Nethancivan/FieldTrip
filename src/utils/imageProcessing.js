@@ -2,8 +2,8 @@ export const MAX_PHOTOS = 6;
 export const MAX_FILE_SIZE_BYTES = 12 * 1024 * 1024;
 export const SUPPORTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-const TARGET_LONG_EDGE = 1600;
-const OUTPUT_QUALITY = 0.84;
+const TARGET_LONG_EDGE = 2000;
+const OUTPUT_QUALITY = 0.9;
 const IMAGE_DECODE_TIMEOUT_MS = 8000;
 
 function readFileAsDataUrl(file) {
@@ -54,15 +54,21 @@ function readImageFromUrl(url) {
   });
 }
 
+async function decodeImageElement(image) {
+  if (!image.decode) {
+    return;
+  }
+
+  await Promise.race([
+    image.decode().catch(() => undefined),
+    new Promise((resolve) => window.setTimeout(resolve, IMAGE_DECODE_TIMEOUT_MS)),
+  ]);
+}
+
 async function decodeWithImageElement(file) {
   const dataUrl = await readFileAsDataUrl(file);
   const image = await readImageFromUrl(dataUrl);
-  if (image.decode) {
-    await Promise.race([
-      image.decode().catch(() => undefined),
-      new Promise((resolve) => window.setTimeout(resolve, IMAGE_DECODE_TIMEOUT_MS)),
-    ]);
-  }
+  await decodeImageElement(image);
   return image;
 }
 
@@ -127,6 +133,13 @@ export async function processEvidenceImage(file) {
   }
 
   const dataUrl = canvas.toDataURL("image/jpeg", OUTPUT_QUALITY);
+  const processedImage = await readImageFromUrl(dataUrl);
+  await decodeImageElement(processedImage);
+
+  if (!processedImage.naturalWidth || !processedImage.naturalHeight) {
+    throw new Error("Ảnh chứng từ chưa được tải hoàn tất.");
+  }
+
   return {
     id: `${Date.now()}-${crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(16).slice(2)}`,
     name: file.name,

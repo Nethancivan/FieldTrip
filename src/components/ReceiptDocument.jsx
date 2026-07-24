@@ -96,6 +96,7 @@ export default function ReceiptDocument({ snapshot, exportedAt, mode = "preview"
                 className="receipt-image"
                 src={photo.dataUrl}
                 alt={`Ảnh chứng từ ${index + 1}`}
+                decoding="async"
                 loading="eager"
               />
             </figure>

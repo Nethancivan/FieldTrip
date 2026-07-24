@@ -9,7 +9,7 @@ import WebsiteFooter from "./components/WebsiteFooter";
 import { copy } from "./constants/copy";
 import { useExpenseForm } from "./hooks/useExpenseForm";
 import { calculateVatTotals } from "./utils/currency";
-import { waitForFrames } from "./utils/datetime";
+import { waitForNextPaint } from "./utils/datetime";
 import { waitForImagesInElement } from "./utils/imageLoading";
 import { createPdfFilename } from "./utils/pdfFilename";
 import { createReceiptId } from "./utils/receiptId";
@@ -87,7 +87,7 @@ export default function App() {
 
     const prepareAssets = async () => {
       try {
-        await waitForFrames(2);
+        await waitForNextPaint();
         if (!exportRef.current) {
           return;
         }
@@ -95,6 +95,7 @@ export default function App() {
           await document.fonts.ready;
         }
         await waitForImagesInElement(exportRef.current);
+        await waitForNextPaint();
         if (!cancelled) {
           setAreReceiptAssetsReady(true);
           if (!exportMessage) {
@@ -148,7 +149,14 @@ export default function App() {
   }, [formApi]);
 
   const handleDownload = useCallback(async () => {
-    if (!snapshot || isDirty || isExporting || !exportRef.current || !areReceiptAssetsReady) {
+    if (
+      !snapshot ||
+      isDirty ||
+      isExporting ||
+      formApi.isProcessingPhotos ||
+      !exportRef.current ||
+      !areReceiptAssetsReady
+    ) {
       return;
     }
 
@@ -162,7 +170,7 @@ export default function App() {
         setExportedAt(nextExportedAt);
       });
 
-      await waitForFrames(2);
+      await waitForNextPaint();
       const { exportReceiptPdf } = await import("./utils/exportPdf");
       await exportReceiptPdf(exportRef.current, createPdfFilename(snapshot));
       setExportTone("success");
@@ -173,9 +181,14 @@ export default function App() {
     } finally {
       setIsExporting(false);
     }
-  }, [areReceiptAssetsReady, isDirty, isExporting, snapshot]);
+  }, [areReceiptAssetsReady, formApi.isProcessingPhotos, isDirty, isExporting, snapshot]);
 
-  const canDownload = Boolean(snapshot) && !isDirty && !isExporting && areReceiptAssetsReady;
+  const canDownload =
+    Boolean(snapshot) &&
+    !isDirty &&
+    !isExporting &&
+    !formApi.isProcessingPhotos &&
+    areReceiptAssetsReady;
 
   return (
     <>

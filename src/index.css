@@ -829,21 +829,22 @@
   }
 
   .receipt-image-wrapper {
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin: 16px 0 0;
+    width: 100%;
+    margin-top: 16px;
     padding: 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   .receipt-image {
     display: block;
-    width: auto;
+    width: 50%;
     max-width: 50%;
     height: auto;
-    max-height: none;
-    margin: 0;
+    margin: 0 auto;
     border: 1px solid var(--brand-border);
     border-radius: 10px;
     background: var(--brand-background);
@@ -1215,12 +1216,6 @@
   .website-footer-information {
     grid-template-columns: 1fr;
     gap: 6px;
-  }
-}
-
-@media (max-width: 640px) {
-  .receipt-image {
-    max-width: 80%;
   }
 }
 
